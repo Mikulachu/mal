@@ -9,163 +9,393 @@ require_once 'includes/db.php';
 // Pobierz ustawienia
 $settings = getSettings();
 $companyEmail = $settings['company_email'] ?? 'maltechnik.chojnice@gmail.com';
+$companyPhone = $settings['company_phone'] ?? '+48 784 607 452';
 
-$pageTitle = 'Współpraca';
+$pageTitle = 'Współpraca medialna';
 ?>
 <?php include 'includes/header.php'; ?>
 
-<!-- Dodatkowe style -->
-<link rel="stylesheet" href="/assets/css/wspolpraca.css">
+<style>
+/* Współpraca - style */
+.hero-cooperation {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+    color: white;
+    padding: 120px 0 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-cooperation::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-cooperation .container {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-cooperation__title {
+    font-size: 56px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    letter-spacing: -0.5px;
+}
+
+.hero-cooperation__lead {
+    font-size: 22px;
+    line-height: 1.7;
+    max-width: 850px;
+    margin: 0 auto;
+    font-weight: 400;
+    opacity: 0.98;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.15);
+}
+
+.cooperation-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.cooperation-content {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 60px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.cooperation-content h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.cooperation-content h3 {
+    font-size: 28px;
+    margin: 50px 0 20px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.cooperation-list {
+    list-style: none;
+    padding: 0;
+    margin: 30px 0;
+}
+
+.cooperation-list li {
+    padding: 20px 0 20px 50px;
+    position: relative;
+    font-size: 18px;
+    line-height: 1.7;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.cooperation-list li:last-child {
+    border-bottom: none;
+}
+
+.cooperation-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 20px;
+    color: #e67e22;
+    font-weight: 700;
+    font-size: 28px;
+    width: 35px;
+    height: 35px;
+    background: rgba(230, 126, 34, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.about-box {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    padding: 35px;
+    border-radius: 12px;
+    border-left: 5px solid #e67e22;
+    margin: 40px 0;
+    font-size: 18px;
+    line-height: 1.8;
+    box-shadow: 0 2px 10px rgba(230, 126, 34, 0.1);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.stat-box {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 40px 30px;
+    border-radius: 16px;
+    text-align: center;
+    border: 2px solid #e0e0e0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #e67e22, #d35400);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+}
+
+.stat-box:hover {
+    border-color: #e67e22;
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(230, 126, 34, 0.2);
+}
+
+.stat-box:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-box__number {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.stat-box__label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.contact-box {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+    color: white;
+    padding: 60px 50px;
+    border-radius: 20px;
+    text-align: center;
+    margin: 60px 0 0;
+    box-shadow: 0 10px 40px rgba(230, 126, 34, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.contact-box h3 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 32px;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-box p {
+    font-size: 18px;
+    margin-bottom: 35px;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-methods {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-method {
+    background: rgba(255,255,255,0.15);
+    padding: 25px 35px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.25);
+    transition: all 0.3s;
+}
+
+.contact-method:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.4);
+    transform: translateY(-3px);
+}
+
+.contact-method strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.contact-method a {
+    color: white;
+    text-decoration: none;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.contact-method a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .hero-cooperation {
+        padding: 80px 0 60px;
+    }
+    
+    .hero-cooperation__title {
+        font-size: 38px;
+    }
+    
+    .hero-cooperation__lead {
+        font-size: 18px;
+    }
+    
+    .cooperation-content {
+        padding: 40px 25px;
+    }
+    
+    .cooperation-content h2 {
+        font-size: 28px;
+    }
+    
+    .cooperation-content h3 {
+        font-size: 24px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-box {
+        padding: 40px 25px;
+    }
+    
+    .contact-box h3 {
+        font-size: 26px;
+    }
+    
+    .contact-methods {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+</style>
 
 <!-- ============================================
      HERO WSPÓŁPRACA
      ============================================ -->
 <section class="hero-cooperation">
     <div class="container">
-        <div class="hero-cooperation__content">
-            <h1 class="hero-cooperation__title">Współpracujmy razem</h1>
-            <p class="hero-cooperation__subtitle">
-                Szukasz partnera do współpracy medialnej? Sprawdź, co możemy razem osiągnąć.
-            </p>
-        </div>
+        <h1 class="hero-cooperation__title">Współpraca medialna</h1>
+        <p class="hero-cooperation__lead">
+            Jeśli chcesz dotrzeć do ludzi, którzy budują, remontują i podejmują decyzje zakupowe — możemy zrobić to mądrze i z efektem.
+        </p>
     </div>
 </section>
 
 <!-- ============================================
-     WSPÓŁPRACA MEDIALNA
+     TREŚĆ
      ============================================ -->
-<section class="section">
+<section class="cooperation-section">
     <div class="container">
-        
-        <!-- Intro -->
-        <div class="media-intro">
-            <h2>Współpraca z markami i mediami</h2>
-            <p>
-                Działamy w branży remontowej od ponad 12 lat. Realizujemy projekty premium, szkolimy, dzielimy się wiedzą. Jeśli szukasz eksperta do materiału, case study lub współpracy brandowej – porozmawiajmy.
-            </p>
-        </div>
-        
-        <!-- Co oferujemy -->
-        <div class="media-offer">
-            <h3>Co możemy dla Ciebie zrobić?</h3>
+        <div class="cooperation-content">
             
-            <div class="offer-grid">
-                <div class="offer-card">
-                    <div class="offer-card__icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="7" width="20" height="15" rx="2" ry="2"/>
-                            <polyline points="17 2 12 7 7 2"/>
-                        </svg>
-                    </div>
-                    <h4>Artykuły eksperckie</h4>
-                    <p>Przygotujemy merytoryczne artykuły o trendach w wykończeniach, technikach malarskich, doborze materiałów.</p>
+            <!-- Co mogę zrobić -->
+            <h2>Co mogę zrobić:</h2>
+            <ul class="cooperation-list">
+                <li><strong>Film na YouTube</strong> — długi format, tutorial, case study realizacji</li>
+                <li><strong>Shorty / Reels</strong> — krótkie, treściwe, viralowe</li>
+                <li><strong>Stories</strong> — relacje na żywo z budowy, za kulisami</li>
+                <li><strong>Case study z realizacji</strong> — szczegółowy opis projektu przed/po</li>
+            </ul>
+            
+            <!-- O mnie -->
+            <h3>O mnie</h3>
+            <div class="about-box">
+                Jestem <strong>Wojtek Maltechnik</strong>. Pokazuję budowlankę po ludzku i konkretnie. Moja społeczność to osoby budujące i remontujące, a nie przypadkowe zasięgi.
+            </div>
+            
+            <!-- Zasięgi -->
+            <h3>Zasięgi</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-box__number">12K+</span>
+                    <span class="stat-box__label">Subskrybenci YouTube</span>
                 </div>
-                
-                <div class="offer-card">
-                    <div class="offer-card__icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="23 7 16 12 23 17 23 7"/>
-                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-                        </svg>
-                    </div>
-                    <h4>Materiały wideo</h4>
-                    <p>Możemy nagrać tutoriale, time-lapse'y z realizacji, porady praktyczne – dostosowane do Twojego formatu.</p>
+                <div class="stat-box">
+                    <span class="stat-box__number">50K+</span>
+                    <span class="stat-box__label">Średnie wyświetlenia</span>
                 </div>
-                
-                <div class="offer-card">
-                    <div class="offer-card__icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                        </svg>
-                    </div>
-                    <h4>Wywiady i podcasty</h4>
-                    <p>Chętnie opowiemy o pracy w branży, wyzwaniach, trendach – format dostosujemy do Twoich potrzeb.</p>
-                </div>
-                
-                <div class="offer-card">
-                    <div class="offer-card__icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
-                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
-                            <line x1="6" y1="6" x2="6.01" y2="6"/>
-                            <line x1="6" y1="18" x2="6.01" y2="18"/>
-                        </svg>
-                    </div>
-                    <h4>Case studies</h4>
-                    <p>Mamy ponad 100 zrealizowanych projektów – możemy przygotować szczegółowe case study z before/after.</p>
-                </div>
-                
-                <div class="offer-card">
-                    <div class="offer-card__icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <polyline points="2 17 12 22 22 17"/>
-                            <polyline points="2 12 12 17 22 12"/>
-                        </svg>
-                    </div>
-                    <h4>Współpraca brandowa</h4>
-                    <p>Jesteś producentem farb, narzędzi, materiałów? Możemy przetestować Twoje produkty w rzeczywistych projektach.</p>
-                </div>
-                
-                <div class="offer-card">
-                    <div class="offer-card__icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                        </svg>
-                    </div>
-                    <h4>Szkolenia i webinary</h4>
-                    <p>Prowadzimy szkolenia dla branży – możemy przygotować webinar dla Twojej społeczności lub klientów.</p>
+                <div class="stat-box">
+                    <span class="stat-box__number">8K+</span>
+                    <span class="stat-box__label">TikTok / Instagram</span>
                 </div>
             </div>
-        </div>
-        
-        <!-- Dlaczego my -->
-        <div class="media-why">
-            <h3>Dlaczego warto z nami współpracować?</h3>
-            <div class="why-list">
-                <div class="why-item">
-                    <span class="why-item__number">01</span>
-                    <div class="why-item__content">
-                        <h4>Doświadczenie</h4>
-                        <p>12 lat w branży, ponad 100 projektów – wiemy, o czym mówimy.</p>
+            
+            <!-- Kontakt -->
+            <div class="contact-box">
+                <h3>Skontaktuj się ze mną</h3>
+                <p>Omówimy szczegóły i ustalimy formę współpracy</p>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <strong>E-mail:</strong>
+                        <a href="mailto:<?php echo h($companyEmail); ?>"><?php echo h($companyEmail); ?></a>
                     </div>
-                </div>
-                <div class="why-item">
-                    <span class="why-item__number">02</span>
-                    <div class="why-item__content">
-                        <h4>Autentyczność</h4>
-                        <p>Nie udajemy ekspertów – jesteśmy nimi. Pracujemy na co dzień, nie tylko mówimy.</p>
-                    </div>
-                </div>
-                <div class="why-item">
-                    <span class="why-item__number">03</span>
-                    <div class="why-item__content">
-                        <h4>Profesjonalizm</h4>
-                        <p>Dotrzymujemy terminów, jesteśmy dostępni, dbamy o jakość treści.</p>
-                    </div>
-                </div>
-                <div class="why-item">
-                    <span class="why-item__number">04</span>
-                    <div class="why-item__content">
-                        <h4>Zdjęcia i video</h4>
-                        <p>Dokumentujemy projekty, mamy archiwum materiałów before/after.</p>
+                    <div class="contact-method">
+                        <strong>Telefon:</strong>
+                        <a href="tel:<?php echo h($companyPhone); ?>"><?php echo h($companyPhone); ?></a>
                     </div>
                 </div>
             </div>
+            
         </div>
-        
-        <!-- CTA -->
-        <div class="media-cta">
-            <h3>Zainteresowany współpracą?</h3>
-            <p>Napisz do nas – opowiemy więcej i ustalimy szczegóły</p>
-            <a href="mailto:<?php echo h($companyEmail); ?>?subject=Współpraca%20medialna" class="btn btn--primary btn--large">
-                📧 Napisz do nas
-            </a>
-        </div>
-        
     </div>
 </section>
 
