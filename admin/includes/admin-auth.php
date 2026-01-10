@@ -1,7 +1,6 @@
 <?php
 /**
  * ADMIN-AUTH.PHP - System autoryzacji administratora (FIXED)
-  
  * 
  * LOKALIZACJA: /admin/includes/admin-auth.php
  */
@@ -34,7 +33,19 @@ function requireLogin() {
 function loginAdmin($username, $password) {
     global $conn;
     
+    // Sprawdź czy połączenie MySQLi istnieje
+    if (!$conn || $conn->connect_error) {
+        error_log("MySQLi connection error in loginAdmin");
+        return false;
+    }
+    
     $stmt = $conn->prepare("SELECT id, username, password_hash, email, full_name FROM admin_users WHERE username = ? AND is_active = 1");
+    
+    if (!$stmt) {
+        error_log("Prepare statement failed: " . $conn->error);
+        return false;
+    }
+    
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -103,21 +114,9 @@ function getAdminData() {
         'id' => $_SESSION['admin_id'] ?? null,
         'username' => $_SESSION['admin_username'] ?? null,
         'email' => $_SESSION['admin_email'] ?? null,
-        'name' => $_SESSION['admin_name'] ?? 'Admin'
+        'name' => $_SESSION['admin_name'] ?? 'Admin',
+        'full_name' => $_SESSION['admin_name'] ?? 'Admin'
     ];
-}
-
-/**
- * Pobierz IP użytkownika
- */
-function getUserIP() {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        return $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        return $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } else {
-        return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-    }
 }
 
 /**
@@ -127,7 +126,7 @@ function logActivity($adminId, $action, $entityType = null, $entityId = null, $d
     global $conn;
     
     // Sprawdź czy połączenie istnieje
-    if (!$conn) {
+    if (!$conn || $conn->connect_error) {
         return false;
     }
     
@@ -141,7 +140,8 @@ function logActivity($adminId, $action, $entityType = null, $entityId = null, $d
         return false;
     }
     
-    $ip = getUserIP();
+    // Użyj funkcji getUserIP() z includes/functions.php
+    $ip = function_exists('getUserIP') ? getUserIP() : ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
     $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
     
     try {
@@ -159,6 +159,7 @@ function logActivity($adminId, $action, $entityType = null, $entityId = null, $d
         }
     } catch (Exception $e) {
         // Ignoruj błędy - logowanie aktywności nie jest krytyczne
+        error_log("Log activity error: " . $e->getMessage());
         return false;
     }
     
