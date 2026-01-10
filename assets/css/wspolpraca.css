@@ -1,0 +1,450 @@
+/**
+ * WSPOLPRACA.CSS - Style dla strony współpracy
+  
+ */
+
+/* ============================================
+   HERO COOPERATION
+   ============================================ */
+
+.hero-cooperation {
+    padding: var(--space-4xl) 0;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    color: var(--color-white);
+    text-align: center;
+}
+
+.hero-cooperation__title {
+    font-size: var(--font-size-5xl);
+    color: var(--color-white);
+    margin-bottom: var(--space-md);
+}
+
+.hero-cooperation__subtitle {
+    font-size: var(--font-size-xl);
+    color: var(--color-gray-200);
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.cooperation-tabs-section {
+    background-color: var(--color-white);
+    border-bottom: 2px solid var(--color-gray-200);
+    position: sticky;
+    top: var(--header-height);
+    z-index: 100;
+}
+
+.cooperation-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+}
+
+.cooperation-tab {
+    padding: var(--space-lg) var(--space-2xl);
+    background-color: transparent;
+    color: var(--color-gray-600);
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.cooperation-tab:hover {
+    color: var(--color-secondary);
+}
+
+.cooperation-tab.active {
+    color: var(--color-secondary);
+    border-bottom-color: var(--color-secondary);
+}
+
+/* ============================================
+   TAB CONTENT
+   ============================================ */
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ============================================
+   MEDIA TAB - INTRO
+   ============================================ */
+
+.media-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-4xl);
+    text-align: center;
+}
+
+.media-intro h2 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-lg);
+}
+
+.media-intro p {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-gray-700);
+}
+
+/* ============================================
+   MEDIA TAB - OFFER
+   ============================================ */
+
+.media-offer {
+    margin-bottom: var(--space-5xl);
+}
+
+.media-offer h3 {
+    font-size: var(--font-size-2xl);
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+}
+
+.offer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+}
+
+.offer-card {
+    padding: var(--space-2xl);
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+}
+
+.offer-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.offer-card__icon {
+    color: var(--color-secondary);
+    margin-bottom: var(--space-md);
+}
+
+.offer-card h4 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-sm);
+    color: var(--color-primary);
+}
+
+.offer-card p {
+    color: var(--color-gray-600);
+    line-height: var(--line-height-relaxed);
+    margin: 0;
+}
+
+/* ============================================
+   MEDIA TAB - WHY
+   ============================================ */
+
+.media-why {
+    margin-bottom: var(--space-5xl);
+}
+
+.media-why h3 {
+    font-size: var(--font-size-2xl);
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+}
+
+.why-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.why-item {
+    display: flex;
+    gap: var(--space-lg);
+    padding: var(--space-xl);
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.why-item__number {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--radius-full);
+}
+
+.why-item__content h4 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-xs);
+}
+
+.why-item__content p {
+    color: var(--color-gray-600);
+    margin: 0;
+}
+
+/* ============================================
+   MEDIA TAB - CTA
+   ============================================ */
+
+.media-cta {
+    text-align: center;
+    padding: var(--space-4xl) var(--space-2xl);
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.media-cta h3 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-md);
+}
+
+.media-cta p {
+    font-size: var(--font-size-lg);
+    color: var(--color-gray-600);
+    margin-bottom: var(--space-xl);
+}
+
+/* ============================================
+   JOBS TAB - INTRO
+   ============================================ */
+
+.jobs-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-4xl);
+    text-align: center;
+}
+
+.jobs-intro h2 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-lg);
+}
+
+.jobs-intro p {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-gray-700);
+}
+
+/* ============================================
+   JOBS TAB - EMPLOYER BENEFITS
+   ============================================ */
+
+.employer-benefits {
+    margin-bottom: var(--space-5xl);
+}
+
+.employer-benefits h3 {
+    font-size: var(--font-size-2xl);
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+}
+
+.benefit-item {
+    padding: var(--space-xl);
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+
+.benefit-item__icon {
+    font-size: 40px;
+    margin-bottom: var(--space-md);
+}
+
+.benefit-item h4 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-sm);
+    color: var(--color-primary);
+}
+
+.benefit-item p {
+    color: var(--color-gray-600);
+    margin: 0;
+}
+
+/* ============================================
+   JOBS TAB - JOB OFFERS
+   ============================================ */
+
+.job-offers {
+    margin-bottom: var(--space-5xl);
+}
+
+.job-offers h3 {
+    font-size: var(--font-size-2xl);
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+}
+
+.job-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+}
+
+.job-card {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+.job-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    padding: var(--space-2xl);
+    background-color: var(--color-gray-50);
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+.job-card__title {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-xs);
+    color: var(--color-primary);
+}
+
+.job-card__location {
+    font-size: var(--font-size-base);
+    color: var(--color-gray-600);
+    margin: 0;
+}
+
+.job-card__type {
+    padding: var(--space-xs) var(--space-md);
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+}
+
+.job-card__content {
+    padding: var(--space-2xl);
+}
+
+.job-card__content p {
+    margin-bottom: var(--space-md);
+    color: var(--color-gray-700);
+}
+
+.job-card__content strong {
+    color: var(--color-primary);
+}
+
+.job-card__content ul {
+    list-style: none;
+    margin: var(--space-sm) 0 var(--space-lg);
+}
+
+.job-card__content li {
+    padding: var(--space-xs) 0;
+    padding-left: var(--space-lg);
+    position: relative;
+    color: var(--color-gray-700);
+}
+
+.job-card__content li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--color-secondary);
+}
+
+.job-card__footer {
+    padding: var(--space-2xl);
+    background-color: var(--color-gray-50);
+    border-top: 1px solid var(--color-gray-200);
+}
+
+/* ============================================
+   JOBS TAB - NO JOBS / SPONTANEOUS
+   ============================================ */
+
+.no-jobs,
+.spontaneous-application {
+    text-align: center;
+    padding: var(--space-3xl);
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.spontaneous-application {
+    margin-top: var(--space-3xl);
+}
+
+.spontaneous-application h3 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-md);
+}
+
+.spontaneous-application p {
+    font-size: var(--font-size-lg);
+    color: var(--color-gray-700);
+    margin-bottom: var(--space-md);
+}
+
+.spontaneous-application a {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (min-width: 768px) {
+    .offer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .job-card__header {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+@media (min-width: 1024px) {
+    .offer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .benefits-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

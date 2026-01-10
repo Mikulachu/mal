@@ -1,0 +1,308 @@
+/**
+ * FAQ.CSS - Style dla strony FAQ
+  
+ */
+
+/* ============================================
+   HERO FAQ
+   ============================================ */
+
+.hero-faq {
+    padding: var(--space-4xl) 0;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    color: var(--color-white);
+    text-align: center;
+}
+
+.hero-faq__title {
+    font-size: var(--font-size-5xl);
+    color: var(--color-white);
+    margin-bottom: var(--space-md);
+}
+
+.hero-faq__subtitle {
+    font-size: var(--font-size-xl);
+    color: var(--color-gray-200);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   SEARCH
+   ============================================ */
+
+.faq-search-section {
+    padding: var(--space-3xl) 0;
+    background-color: var(--color-white);
+}
+
+.faq-search {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.faq-search svg {
+    position: absolute;
+    left: var(--space-lg);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-gray-400);
+    pointer-events: none;
+}
+
+.faq-search__input {
+    width: 100%;
+    padding: var(--space-lg) var(--space-lg) var(--space-lg) 56px;
+    border: 2px solid var(--color-gray-300);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-lg);
+    transition: border-color var(--transition-fast);
+}
+
+.faq-search__input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+}
+
+.faq-search__hint {
+    text-align: center;
+    margin-top: var(--space-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
+}
+
+/* ============================================
+   FAQ SECTION
+   ============================================ */
+
+.faq-section {
+    background-color: var(--color-gray-50);
+}
+
+.faq-category {
+    max-width: 900px;
+    margin: 0 auto var(--space-4xl);
+}
+
+.faq-category:last-child {
+    margin-bottom: 0;
+}
+
+.faq-category__title {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 3px solid var(--color-secondary);
+    color: var(--color-primary);
+}
+
+/* ============================================
+   ACCORDION
+   ============================================ */
+
+.accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.accordion__item {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-fast);
+}
+
+.accordion__item:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.accordion__item.active {
+    box-shadow: var(--shadow-lg);
+}
+
+.accordion__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-xl);
+    background-color: var(--color-white);
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color var(--transition-fast);
+}
+
+.accordion__header:hover {
+    background-color: var(--color-gray-50);
+}
+
+.accordion__item.active .accordion__header {
+    background-color: var(--color-gray-50);
+}
+
+.accordion__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+    flex: 1;
+}
+
+.accordion__icon {
+    flex-shrink: 0;
+    color: var(--color-secondary);
+    transition: transform var(--transition-base);
+}
+
+.accordion__item.active .accordion__icon {
+    transform: rotate(180deg);
+}
+
+.accordion__content {
+    display: none;
+    padding: var(--space-lg) var(--space-xl) var(--space-xl);
+}
+
+.accordion__item.active .accordion__content {
+    display: block;
+}
+
+.accordion__content p {
+    color: var(--color-gray-700);
+    line-height: var(--line-height-relaxed);
+    font-size: var(--font-size-base);
+    margin: 0 0 var(--space-md) 0;
+}
+
+.accordion__content p:last-child {
+    margin-bottom: 0;
+}
+
+.accordion__content a {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}
+
+.accordion__content a:hover {
+    color: var(--color-secondary-dark);
+}
+
+/* ============================================
+   HIGHLIGHT (dla search)
+   ============================================ */
+
+.accordion__item.hidden {
+    display: none;
+}
+
+.accordion__item.highlighted {
+    animation: highlight 0.6s ease-out;
+}
+
+@keyframes highlight {
+    0% {
+        background-color: rgba(230, 126, 34, 0.1);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+mark {
+    background-color: var(--color-secondary-light);
+    color: var(--color-white);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* ============================================
+   NO RESULTS
+   ============================================ */
+
+.faq-no-results {
+    text-align: center;
+    padding: var(--space-4xl) var(--space-2xl);
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    max-width: 600px;
+    margin: 0 auto;
+    display: none;
+}
+
+.faq-no-results.show {
+    display: block;
+}
+
+.faq-no-results svg {
+    color: var(--color-gray-400);
+    margin-bottom: var(--space-lg);
+}
+
+.faq-no-results h3 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-md);
+    color: var(--color-gray-700);
+}
+
+.faq-no-results p {
+    font-size: var(--font-size-lg);
+    color: var(--color-gray-600);
+    margin-bottom: var(--space-lg);
+}
+
+/* ============================================
+   CTA FAQ
+   ============================================ */
+
+.cta-faq {
+    background-color: var(--color-white);
+}
+
+.cta-faq__content {
+    text-align: center;
+    padding: var(--space-3xl) var(--space-2xl);
+}
+
+.cta-faq__content h2 {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--space-md);
+}
+
+.cta-faq__content p {
+    font-size: var(--font-size-xl);
+    color: var(--color-gray-600);
+    margin-bottom: var(--space-2xl);
+}
+
+.cta-faq__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    justify-content: center;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 767px) {
+    .accordion__title {
+        font-size: var(--font-size-base);
+    }
+    
+    .accordion__header {
+        padding: var(--space-lg);
+    }
+    
+    .accordion__content {
+        padding: var(--space-md) var(--space-lg) var(--space-lg);
+    }
+    
+    .accordion__content p {
+        font-size: var(--font-size-sm);
+    }
+}

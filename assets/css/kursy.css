@@ -1,0 +1,295 @@
+/**
+ * KURSY.CSS - Style dla strony kursów
+  
+ */
+
+/* ============================================
+   HERO COURSES
+   ============================================ */
+
+.hero-courses {
+    padding: var(--space-5xl) 0;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+    color: var(--color-white);
+    text-align: center;
+}
+
+.hero-courses__label {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-lg);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--color-white);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-lg);
+}
+
+.hero-courses__title {
+    font-size: var(--font-size-5xl);
+    color: var(--color-white);
+    margin-bottom: var(--space-md);
+}
+
+.hero-courses__subtitle {
+    font-size: var(--font-size-xl);
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   COURSES INTRO
+   ============================================ */
+
+.courses-intro {
+    background-color: var(--color-white);
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.intro-content h2 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-lg);
+}
+
+.intro-content p {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-gray-700);
+    margin-bottom: var(--space-lg);
+}
+
+/* ============================================
+   COURSES GRID
+   ============================================ */
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+}
+
+.course-card {
+    position: relative;
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+}
+
+.course-card:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+}
+
+.course-card--featured {
+    border: 3px solid var(--color-secondary);
+}
+
+.course-card__badge {
+    position: absolute;
+    top: var(--space-lg);
+    right: var(--space-lg);
+    padding: var(--space-xs) var(--space-md);
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    border-radius: var(--radius-full);
+    z-index: 1;
+}
+
+.course-card__content {
+    padding: var(--space-2xl);
+}
+
+.course-card__title {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-md);
+    padding-right: 100px;
+    color: var(--color-primary);
+}
+
+.course-card__desc {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-gray-600);
+    margin-bottom: var(--space-lg);
+}
+
+.course-card__features {
+    list-style: none;
+    margin-bottom: var(--space-xl);
+}
+
+.course-card__features li {
+    padding: var(--space-sm) 0;
+    padding-left: var(--space-xl);
+    color: var(--color-gray-700);
+    position: relative;
+}
+
+.course-card__features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-success);
+    font-weight: var(--font-weight-bold);
+}
+
+.course-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-gray-200);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
+}
+
+.meta-item svg {
+    color: var(--color-secondary);
+    flex-shrink: 0;
+}
+
+/* ============================================
+   BENEFITS GRID
+   ============================================ */
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+}
+
+.benefit-item {
+    text-align: center;
+    padding: var(--space-xl);
+}
+
+.benefit-item__icon {
+    color: var(--color-accent);
+    margin-bottom: var(--space-md);
+}
+
+.benefit-item h4 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-sm);
+    color: var(--color-primary);
+}
+
+.benefit-item p {
+    color: var(--color-gray-600);
+    margin: 0;
+}
+
+/* ============================================
+   INTEREST FORM
+   ============================================ */
+
+.interest-form-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--color-white);
+    padding: var(--space-3xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.interest-form-content {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+}
+
+.interest-form-content h2 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-md);
+}
+
+.interest-form-content p {
+    font-size: var(--font-size-lg);
+    color: var(--color-gray-600);
+    margin: 0;
+}
+
+.interest-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+}
+
+/* ============================================
+   FAQ SIMPLE
+   ============================================ */
+
+.faq-simple {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.faq-simple__item {
+    padding: var(--space-xl);
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.faq-simple__item h4 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-sm);
+    color: var(--color-primary);
+}
+
+.faq-simple__item p {
+    color: var(--color-gray-700);
+    line-height: var(--line-height-relaxed);
+    margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (min-width: 768px) {
+    .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .benefits-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
