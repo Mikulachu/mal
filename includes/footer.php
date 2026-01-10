@@ -78,13 +78,12 @@
                     
                     <!-- Services column -->
                     <div class="footer__col">
-                        <h4 class="footer__heading">Usługi</h4>
+                        <h4 class="footer__heading">Dla klienta</h4>
                         <ul class="footer__list">
-                            <li><a href="/oferta.php#elewacje">Elewacje budynków</a></li>
-                            <li><a href="/oferta.php#wnetrza">Wykończenia wnętrz</a></li>
-                            <li><a href="/oferta.php#remonty">Remonty kompleksowe</a></li>
-                            <li><a href="/oferta.php#instytucje">Dla firm i instytucji</a></li>
-                            <li><a href="/oferta.php#konsultacje">Konsultacje online</a></li>
+                            <li><a href="/cennik.php">Kalkulator cen</a></li>
+                            <li><a href="/realizacje.php">Portfolio realizacji</a></li>
+                            <li><a href="/faq.php">Najczęstsze pytania</a></li>
+                            <li><a href="/kontakt.php">Kontakt</a></li>
                         </ul>
                     </div>
                     
@@ -93,10 +92,9 @@
                         <h4 class="footer__heading">Informacje</h4>
                         <ul class="footer__list">
                             <li><a href="/o-nas.php">O nas</a></li>
-                            <li><a href="/realizacje.php">Portfolio realizacji</a></li>
-                            <li><a href="/faq.php">Najczęstsze pytania</a></li>
-                            <li><a href="/cennik.php">Kalkulator cen</a></li>
-                            <li><a href="/kontakt.php">Kontakt</a></li>
+                            <li><a href="/wspolpraca.php">Współpraca medialna</a></li>
+                            <li><a href="/polityka-prywatnosci.php">Polityka prywatności</a></li>
+                            <li><a href="/regulamin.php">Regulamin</a></li>
                         </ul>
                     </div>
                     
