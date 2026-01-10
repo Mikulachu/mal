@@ -13,6 +13,7 @@ error_log("=== CONTACT FORM START ===");
 error_log("POST data: " . print_r($_POST, true));
 
 require_once 'includes/db.php';
+require_once 'includes/functions.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -161,8 +162,7 @@ try {
     
     echo json_encode([
         'success' => false,
-        'message' => 'Wystąpił błąd podczas zapisywania. Spróbuj ponownie lub zadzwoń.',
-        'error' => $e->getMessage() // DEBUG - usuń w produkcji
+        'message' => 'Wystąpił błąd podczas zapisywania. Spróbuj ponownie lub zadzwoń.'
     ]);
 } catch (Exception $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
@@ -173,8 +173,7 @@ try {
     
     echo json_encode([
         'success' => false,
-        'message' => 'Wystąpił błąd. Spróbuj ponownie lub zadzwoń.',
-        'error' => $e->getMessage() // DEBUG - usuń w produkcji
+        'message' => 'Wystąpił błąd. Spróbuj ponownie lub zadzwoń.'
     ]);
 }
 
@@ -188,8 +187,8 @@ try {
 function sendClientEmail($name, $email, $typ, $content) {
     $settings = getSettings();
     $companyName = $settings['company_name'] ?? 'Maltechnik';
-    $companyPhone = $settings['company_phone'] ?? '+48 123 456 789';
-    $companyEmail = $settings['company_email'] ?? 'kontakt@example.pl';
+    $companyPhone = $settings['company_phone'] ?? '+48 784 607 452';
+    $companyEmail = $settings['company_email'] ?? 'maltechnik.chojnice@gmail.com';
     
     $firstName = explode(' ', $name)[0];
     
@@ -234,7 +233,7 @@ To jest automatyczna wiadomość. Prosimy na nią nie odpowiadać.
     }
     
     $headers = [
-        "From: {$companyName} <noreply@example.pl>",
+        "From: {$companyName} <{$companyEmail}>",
         "Reply-To: {$companyEmail}",
         'Content-Type: text/plain; charset=UTF-8'
     ];
@@ -247,7 +246,7 @@ To jest automatyczna wiadomość. Prosimy na nią nie odpowiadać.
  */
 function sendAdminEmailConsultation($name, $email, $phone, $topic) {
     $settings = getSettings();
-    $notificationEmail = $settings['notification_email'] ?? 'kontakt@example.pl';
+    $notificationEmail = $settings['notification_email'] ?? 'maltechnik.chojnice@gmail.com';
     $companyName = $settings['company_name'] ?? 'Maltechnik';
     
     $subject = '📞 Nowa konsultacja online';
@@ -272,7 +271,7 @@ IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . "
 ";
     
     $headers = [
-        "From: System {$companyName} <noreply@example.pl>",
+        "From: System {$companyName} <noreply@maltechnik.pl>",
         'Reply-To: ' . $email,
         'Content-Type: text/plain; charset=UTF-8'
     ];
@@ -285,7 +284,7 @@ IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . "
  */
 function sendAdminEmailLead($name, $email, $phone, $question) {
     $settings = getSettings();
-    $notificationEmail = $settings['notification_email'] ?? 'kontakt@example.pl';
+    $notificationEmail = $settings['notification_email'] ?? 'maltechnik.chojnice@gmail.com';
     $companyName = $settings['company_name'] ?? 'Maltechnik';
     
     $subject = '❓ Nowe pytanie od klienta';
@@ -310,7 +309,7 @@ IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . "
 ";
     
     $headers = [
-        "From: System {$companyName} <noreply@example.pl>",
+        "From: System {$companyName} <noreply@maltechnik.pl>",
         'Reply-To: ' . $email,
         'Content-Type: text/plain; charset=UTF-8'
     ];
