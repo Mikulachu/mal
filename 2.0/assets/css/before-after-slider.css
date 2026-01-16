@@ -1,0 +1,214 @@
+/**
+ * BEFORE-AFTER SLIDER - Dopasowany do zdjęcia
+  
+ */
+
+.before-after-container {
+    position: relative;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.before-after-slider {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    cursor: ew-resize;
+    user-select: none;
+}
+
+/* AFTER - relative, ustawia wysokość całego slidera */
+.after-image {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+/* BEFORE - absolute, nakłada się na after */
+.before-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    clip-path: inset(0 50% 0 0);
+}
+
+.before-image img,
+.after-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Labels PRZED/PO - MINIMALISTYCZNE */
+.label {
+    position: absolute;
+    top: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    color: #2c3e50;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 10;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.label-before {
+    left: 20px;
+}
+
+.label-after {
+    right: 20px;
+}
+
+/* Slider handle (suwak) - MINIMALISTYCZNY */
+.slider-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.slider-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateX(-50%);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Przycisk suwaka - MINIMALISTYCZNY */
+.slider-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    cursor: ew-resize;
+    pointer-events: auto;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+}
+
+.slider-button:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    background: white;
+}
+
+.slider-button svg {
+    width: 20px;
+    height: 20px;
+    fill: #555;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.slider-button:hover svg {
+    opacity: 1;
+}
+
+/* ============================================
+   KLIKALNE LINKI
+   ============================================ */
+
+.portfolio-item__link-wrapper,
+.portfolio-item__content-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-item__link-wrapper:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.portfolio-item__content-link:hover {
+    color: inherit;
+}
+
+.portfolio-item__content-link:hover .portfolio-item__title {
+    color: var(--primary-color, #3498db);
+}
+
+/* Portfolio item container */
+.portfolio-item {
+    overflow: hidden;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Portfolio image */
+.portfolio-item__image {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background: #f8f9fa;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+    .slider-button {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .slider-button svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .label {
+        font-size: 10px;
+        padding: 6px 12px;
+        top: 12px;
+    }
+    
+    .label-before {
+        left: 12px;
+    }
+    
+    .label-after {
+        right: 12px;
+    }
+}
+
+/* Slider w liście realizacji - AUTO wysokość */
+.portfolio-item__image.before-after-container {
+    height: auto;
+}
+
+/* Dodatkowe zabezpieczenie dla img */
+.portfolio-item__image img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

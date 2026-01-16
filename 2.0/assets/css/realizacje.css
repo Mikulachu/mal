@@ -1,0 +1,388 @@
+/**
+ * REALIZACJE.CSS - Style dla strony portfolio
+ * Wersja: 2.0 (Premium Rebrand)
+ */
+
+/* ============================================
+   HERO PORTFOLIO
+   ============================================ */
+
+.hero-portfolio {
+    padding: var(--space-16) 0;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-hover) 100%);
+    color: var(--bg);
+    text-align: center;
+}
+
+@media (min-width: 1024px) {
+    .hero-portfolio {
+        padding: var(--space-20) 0;
+    }
+}
+
+.hero-portfolio__title {
+    font-size: var(--font-4xl);
+    color: var(--bg);
+    margin-bottom: var(--space-4);
+}
+
+@media (min-width: 768px) {
+    .hero-portfolio__title {
+        font-size: var(--font-5xl);
+    }
+}
+
+.hero-portfolio__subtitle {
+    font-size: var(--font-lg);
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .hero-portfolio__subtitle {
+        font-size: var(--font-xl);
+    }
+}
+
+/* ============================================
+   FILTERS SECTION
+   ============================================ */
+
+.filters-section {
+    padding: var(--space-8) 0;
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: var(--header-height);
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-bottom: var(--space-4);
+}
+
+.filter-btn {
+    padding: var(--space-3) var(--space-6);
+    background-color: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-full);
+    font-size: var(--font-base);
+    font-weight: var(--font-medium);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    min-height: 44px;
+}
+
+.filter-btn:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+}
+
+.filter-btn.active {
+    background-color: var(--brand);
+    color: var(--bg);
+    border-color: var(--brand);
+}
+
+.filters-count {
+    text-align: center;
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+.filters-count span {
+    font-weight: var(--font-bold);
+    color: var(--brand);
+}
+
+/* ============================================
+   PORTFOLIO GRID
+   ============================================ */
+
+.portfolio-section {
+    background-color: var(--bg-soft);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+}
+
+@media (min-width: 768px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.portfolio-item {
+    background-color: var(--bg);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+    border: 1px solid var(--border);
+}
+
+.portfolio-item.hidden {
+    display: none;
+}
+
+.portfolio-item:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+    border-color: var(--brand);
+}
+
+/* Portfolio item image */
+.portfolio-item__image {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    background-color: var(--bg-soft);
+}
+
+.portfolio-item__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.portfolio-item:hover .portfolio-item__image img {
+    transform: scale(1.05);
+}
+
+.portfolio-item__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(43, 89, 166, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.portfolio-item:hover .portfolio-item__overlay {
+    opacity: 1;
+}
+
+.portfolio-item__link {
+    padding: var(--space-4) var(--space-8);
+    background-color: var(--cta);
+    color: var(--bg);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-semibold);
+    transition: all var(--transition-fast);
+}
+
+.portfolio-item__link:hover {
+    background-color: var(--cta-hover);
+    transform: scale(1.05);
+}
+
+/* Portfolio item content */
+.portfolio-item__content {
+    padding: var(--space-8);
+}
+
+.portfolio-item__category {
+    display: inline-block;
+    padding: var(--space-1) var(--space-4);
+    background-color: var(--brand-tint);
+    color: var(--brand);
+    font-size: var(--font-xs);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-4);
+}
+
+.portfolio-item__title {
+    font-size: var(--font-xl);
+    margin-bottom: var(--space-2);
+    color: var(--text);
+}
+
+.portfolio-item__desc {
+    font-size: var(--font-base);
+    color: var(--text-muted);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-4);
+}
+
+.portfolio-item__meta {
+    display: flex;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+}
+
+.meta-item i {
+    color: var(--brand);
+    flex-shrink: 0;
+}
+
+/* ============================================
+   PORTFOLIO LINKS (clickable)
+   ============================================ */
+
+.portfolio-item__link-wrapper,
+.portfolio-item__content-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform var(--transition-base);
+}
+
+.portfolio-item__link-wrapper:hover {
+    transform: translateY(-3px);
+}
+
+.portfolio-item__content-link:hover {
+    color: inherit;
+}
+
+.portfolio-item__content-link:hover .portfolio-item__title {
+    color: var(--brand);
+}
+
+/* ============================================
+   NO RESULTS
+   ============================================ */
+
+.portfolio-no-results {
+    text-align: center;
+    padding: var(--space-20) var(--space-8);
+}
+
+.portfolio-no-results i {
+    color: var(--text-muted);
+    font-size: 64px;
+    margin-bottom: var(--space-8);
+}
+
+.portfolio-no-results h3 {
+    font-size: var(--font-2xl);
+    margin-bottom: var(--space-4);
+    color: var(--text);
+}
+
+.portfolio-no-results p {
+    font-size: var(--font-lg);
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.portfolio-no-results a {
+    color: var(--brand);
+    text-decoration: underline;
+}
+
+/* ============================================
+   CTA PORTFOLIO
+   ============================================ */
+
+.cta-portfolio {
+    background-color: var(--bg);
+}
+
+.cta-portfolio__content {
+    text-align: center;
+    padding: var(--space-12) var(--space-8);
+}
+
+@media (min-width: 640px) {
+    .cta-portfolio__content {
+        padding: var(--space-16) var(--space-8);
+    }
+}
+
+.cta-portfolio__content h2 {
+    font-size: var(--font-3xl);
+    margin-bottom: var(--space-4);
+}
+
+@media (min-width: 768px) {
+    .cta-portfolio__content h2 {
+        font-size: var(--font-4xl);
+    }
+}
+
+.cta-portfolio__content p {
+    font-size: var(--font-lg);
+    color: var(--text-muted);
+    margin-bottom: var(--space-8);
+}
+
+@media (min-width: 768px) {
+    .cta-portfolio__content p {
+        font-size: var(--font-xl);
+    }
+}
+
+.cta-portfolio__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    justify-content: center;
+    align-items: center;
+}
+
+@media (min-width: 640px) {
+    .cta-portfolio__buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.portfolio-item {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+.portfolio-item:nth-child(1) { animation-delay: 0s; }
+.portfolio-item:nth-child(2) { animation-delay: 0.05s; }
+.portfolio-item:nth-child(3) { animation-delay: 0.1s; }
+.portfolio-item:nth-child(4) { animation-delay: 0.15s; }
+.portfolio-item:nth-child(5) { animation-delay: 0.2s; }
+.portfolio-item:nth-child(6) { animation-delay: 0.25s; }
