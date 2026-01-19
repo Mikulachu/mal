@@ -237,12 +237,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                         </div>
                     </div>
                 </div>
-                
+
+                <?php
+                // Parsuj additional_data (JSON)
+                $additionalData = [];
+                if (!empty($lead['additional_data'])) {
+                    $additionalData = json_decode($lead['additional_data'], true) ?? [];
+                }
+                ?>
+
+                <?php if (!empty($additionalData['temat_pelny'])): ?>
+                <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                    <div class="info-label" style="margin-bottom: 12px;">Temat wiadomości</div>
+                    <div style="background: #e3f2fd; padding: 16px; border-radius: 8px; border-left: 4px solid #2196F3;">
+                        <strong><?php echo htmlspecialchars($additionalData['temat_pelny']); ?></strong>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <?php if (!empty($additionalData['lokalizacja'])): ?>
+                <div style="margin-top: 16px;">
+                    <div class="info-label" style="margin-bottom: 8px;">📍 Lokalizacja</div>
+                    <div style="padding: 12px; background: var(--bg-body); border-radius: 8px;">
+                        <?php echo htmlspecialchars($additionalData['lokalizacja']); ?>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <?php if (!empty($additionalData['termin'])): ?>
+                <div style="margin-top: 16px;">
+                    <div class="info-label" style="margin-bottom: 8px;">📅 Termin / kiedy chce startować</div>
+                    <div style="padding: 12px; background: var(--bg-body); border-radius: 8px;">
+                        <?php echo htmlspecialchars($additionalData['termin']); ?>
+                    </div>
+                </div>
+                <?php endif; ?>
+
                 <?php if ($lead['message']): ?>
                 <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
-                    <div class="info-label" style="margin-bottom: 12px;">Pytanie</div>
+                    <div class="info-label" style="margin-bottom: 12px;">Opis / Pytanie</div>
                     <div style="background: var(--bg-body); padding: 16px; border-radius: 8px; line-height: 1.6; white-space: pre-wrap;">
                         <?php echo htmlspecialchars($lead['message']); ?>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <?php if (!empty($additionalData['attachments']) && is_array($additionalData['attachments'])): ?>
+                <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                    <div class="info-label" style="margin-bottom: 12px;">📎 Załączniki (<?php echo count($additionalData['attachments']); ?>)</div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+                        <?php foreach ($additionalData['attachments'] as $file): ?>
+                        <a href="/2.1/<?php echo htmlspecialchars($file['path']); ?>"
+                           target="_blank"
+                           style="display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg-body); border-radius: 8px; text-decoration: none; color: var(--text-primary); border: 1px solid var(--border); transition: all 0.2s;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                                <polyline points="13 2 13 9 20 9"/>
+                            </svg>
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <?php echo htmlspecialchars($file['original_name']); ?>
+                                </div>
+                                <div style="font-size: 11px; color: var(--text-secondary);">
+                                    <?php echo round($file['size'] / 1024, 1); ?> KB
+                                </div>
+                            </div>
+                        </a>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <?php endif; ?>
