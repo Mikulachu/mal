@@ -1,0 +1,773 @@
+/**
+ * WSPOLPRACA.CSS - Style dla strony współpracy
+ * Wersja: 2.0 (Premium Rebrand)
+ * Brand: #2B59A6, Tint: #E9F0FF, CTA: #16A34A
+ */
+
+/* ============================================
+   HERO COOPERATION
+   ============================================ */
+
+.hero-cooperation {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #2B59A6 0%, #244C8F 100%);
+    color: #FFFFFF;
+    text-align: center;
+}
+
+@media (min-width: 1024px) {
+    .hero-cooperation {
+        padding: 5rem 0;
+    }
+}
+
+.hero-cooperation__title {
+    font-size: 2.25rem;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .hero-cooperation__title {
+        font-size: 3rem;
+    }
+}
+
+.hero-cooperation__subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.95);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .hero-cooperation__subtitle {
+        font-size: 1.25rem;
+    }
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.cooperation-tabs-section {
+    background-color: #FFFFFF;
+    border-bottom: 2px solid #E5E7EB;
+    position: sticky;
+    top: 72px;
+    z-index: 100;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cooperation-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    min-width: min-content;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .cooperation-tabs {
+        gap: 1rem;
+    }
+}
+
+.cooperation-tab {
+    padding: 1rem 1.5rem;
+    background-color: transparent;
+    color: #6B7280;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 150ms ease-in-out;
+    white-space: nowrap;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .cooperation-tab {
+        padding: 1.25rem 2rem;
+        font-size: 1.125rem;
+    }
+}
+
+.cooperation-tab:hover {
+    color: #2B59A6;
+    background-color: #E9F0FF;
+}
+
+.cooperation-tab.active {
+    color: #2B59A6;
+    border-bottom-color: #2B59A6;
+    background-color: #E9F0FF;
+}
+
+/* ============================================
+   TAB CONTENT
+   ============================================ */
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ============================================
+   MEDIA TAB - INTRO
+   ============================================ */
+
+.media-intro {
+    max-width: 800px;
+    margin: 0 auto 4rem;
+    text-align: center;
+}
+
+.media-intro h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .media-intro h2 {
+        font-size: 1.875rem;
+    }
+}
+
+.media-intro p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .media-intro p {
+        font-size: 1.125rem;
+    }
+}
+
+/* ============================================
+   MEDIA TAB - OFFER
+   ============================================ */
+
+.media-offer {
+    margin-bottom: 5rem;
+}
+
+.media-offer h3 {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .media-offer h3 {
+        font-size: 1.5rem;
+    }
+}
+
+.offer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .offer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .offer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.offer-card {
+    padding: 2rem;
+    background-color: #FFFFFF;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 300ms ease-in-out;
+    border: 1px solid #E5E7EB;
+    width: 100%;
+    max-width: 100%;
+}
+
+.offer-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    background-color: #E9F0FF;
+}
+
+.offer-card__icon {
+    color: #2B59A6;
+    margin-bottom: 1.5rem;
+}
+
+.offer-card__icon i {
+    font-size: 48px;
+}
+
+.offer-card h4 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .offer-card h4 {
+        font-size: 1.25rem;
+    }
+}
+
+.offer-card p {
+    color: #6B7280;
+    line-height: 1.75;
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* ============================================
+   MEDIA TAB - WHY
+   ============================================ */
+
+.media-why {
+    margin-bottom: 5rem;
+}
+
+.media-why h3 {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .media-why h3 {
+        font-size: 1.5rem;
+    }
+}
+
+.why-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .why-list {
+        gap: 2rem;
+    }
+}
+
+.why-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background-color: #FFFFFF;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    transition: all 300ms ease-in-out;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 640px) {
+    .why-item {
+        flex-direction: row;
+        padding: 2rem;
+    }
+}
+
+.why-item:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background-color: #E9F0FF;
+}
+
+.why-item__number {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2B59A6 0%, #244C8F 100%);
+    color: #FFFFFF;
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+    .why-item__number {
+        width: 64px;
+        height: 64px;
+        font-size: 1.5rem;
+    }
+}
+
+.why-item__content h4 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .why-item__content h4 {
+        font-size: 1.25rem;
+    }
+}
+
+.why-item__content p {
+    color: #6B7280;
+    margin: 0;
+    line-height: 1.75;
+    font-size: 1rem;
+}
+
+/* ============================================
+   MEDIA TAB - CTA
+   ============================================ */
+
+.media-cta {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #E5E7EB;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .media-cta {
+        padding: 4rem 2rem;
+    }
+}
+
+.media-cta h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .media-cta h3 {
+        font-size: 1.875rem;
+    }
+}
+
+.media-cta p {
+    font-size: 1rem;
+    color: #6B7280;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    .media-cta p {
+        font-size: 1.125rem;
+    }
+}
+
+/* ============================================
+   JOBS TAB - INTRO
+   ============================================ */
+
+.jobs-intro {
+    max-width: 800px;
+    margin: 0 auto 4rem;
+    text-align: center;
+}
+
+.jobs-intro h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .jobs-intro h2 {
+        font-size: 1.875rem;
+    }
+}
+
+.jobs-intro p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .jobs-intro p {
+        font-size: 1.125rem;
+    }
+}
+
+/* ============================================
+   JOBS TAB - EMPLOYER BENEFITS
+   ============================================ */
+
+.employer-benefits {
+    margin-bottom: 5rem;
+}
+
+.employer-benefits h3 {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .employer-benefits h3 {
+        font-size: 1.5rem;
+    }
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .benefits-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.benefit-item {
+    padding: 2rem;
+    background-color: #FFFFFF;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #E5E7EB;
+    transition: all 300ms ease-in-out;
+    width: 100%;
+    max-width: 100%;
+}
+
+.benefit-item:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    background-color: #E9F0FF;
+}
+
+.benefit-item__icon {
+    margin-bottom: 1.5rem;
+}
+
+.benefit-item__icon i {
+    font-size: 48px;
+    color: #2B59A6;
+}
+
+.benefit-item h4 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .benefit-item h4 {
+        font-size: 1.125rem;
+    }
+}
+
+.benefit-item p {
+    color: #6B7280;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.75;
+}
+
+@media (min-width: 768px) {
+    .benefit-item p {
+        font-size: 1rem;
+    }
+}
+
+/* ============================================
+   JOBS TAB - JOB OFFERS
+   ============================================ */
+
+.job-offers {
+    margin-bottom: 5rem;
+}
+
+.job-offers h3 {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .job-offers h3 {
+        font-size: 1.5rem;
+    }
+}
+
+.job-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .job-list {
+        gap: 2.5rem;
+    }
+}
+
+.job-card {
+    background-color: #FFFFFF;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #E5E7EB;
+    transition: all 300ms ease-in-out;
+    width: 100%;
+    max-width: 100%;
+}
+
+.job-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: #2B59A6;
+}
+
+.job-card__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: #F7F8FA;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+@media (min-width: 768px) {
+    .job-card__header {
+        flex-direction: row;
+        align-items: center;
+        padding: 2rem;
+        gap: 1.5rem;
+    }
+}
+
+.job-card__title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .job-card__title {
+        font-size: 1.5rem;
+    }
+}
+
+.job-card__location {
+    font-size: 0.875rem;
+    color: #6B7280;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .job-card__location {
+        font-size: 1rem;
+    }
+}
+
+.job-card__location i {
+    color: #2B59A6;
+}
+
+.job-card__type {
+    padding: 0.5rem 1rem;
+    background-color: #2B59A6;
+    color: #FFFFFF;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.job-card__content {
+    padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .job-card__content {
+        padding: 2rem;
+    }
+}
+
+.job-card__content p {
+    margin-bottom: 1rem;
+    color: #111827;
+    line-height: 1.75;
+    font-size: 1rem;
+}
+
+.job-card__content strong {
+    color: #2B59A6;
+    font-weight: 600;
+}
+
+.job-card__content ul {
+    list-style: none;
+    margin: 0.75rem 0 1.5rem;
+    padding: 0;
+}
+
+.job-card__content li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #111827;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.job-card__content li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    background-color: #16A34A;
+    border-radius: 9999px;
+}
+
+.job-card__footer {
+    padding: 1.5rem;
+    background-color: #F7F8FA;
+    border-top: 1px solid #E5E7EB;
+}
+
+@media (min-width: 768px) {
+    .job-card__footer {
+        padding: 2rem;
+    }
+}
+
+/* ============================================
+   JOBS TAB - NO JOBS / SPONTANEOUS
+   ============================================ */
+
+.no-jobs,
+.spontaneous-application {
+    text-align: center;
+    padding: 3rem;
+    background-color: #FFFFFF;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .no-jobs,
+    .spontaneous-application {
+        padding: 4rem;
+    }
+}
+
+.spontaneous-application {
+    margin-top: 3rem;
+}
+
+.no-jobs i {
+    font-size: 64px;
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+.spontaneous-application h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #111827;
+}
+
+@media (min-width: 768px) {
+    .spontaneous-application h3 {
+        font-size: 1.5rem;
+    }
+}
+
+.spontaneous-application p {
+    font-size: 1rem;
+    color: #111827;
+    margin-bottom: 1rem;
+    line-height: 1.75;
+}
+
+@media (min-width: 768px) {
+    .spontaneous-application p {
+        font-size: 1.125rem;
+    }
+}
+
+.spontaneous-application a {
+    color: #2B59A6;
+    text-decoration: underline;
+    transition: color 150ms ease-in-out;
+}
+
+.spontaneous-application a:hover {
+    color: #244C8F;
+}
+
+/* ============================================
+   OVERFLOW FIX
+   ============================================ */
+
+.tab-content,
+.tab-content * {
+    max-width: 100%;
+    overflow-x: hidden;
+}
