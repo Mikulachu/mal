@@ -1,9 +1,7 @@
 <?php
 /**
- * PROCESS-CONTACT.PHP - Obsługa formularza kontaktowego z PHPMailer i HTML
- * Konsultacja → consultations
- * Pytanie → leads
- * Konfiguracja SMTP z includes/db.php
+ * PROCESS-CONTACT.PHP - Obsługa nowego formularza kontaktowego
+ * Zapisuje do leads z załącznikami
  */
 
 // Wyłącz wyświetlanie błędów
@@ -37,15 +35,15 @@ try {
     if (!file_exists(__DIR__ . '/includes/email-helpers.php')) {
         throw new Exception('Brak pliku email-helpers.php');
     }
-    
+
     require_once __DIR__ . '/includes/db.php';
     require_once __DIR__ . '/includes/functions.php';
     require_once __DIR__ . '/includes/email-helpers.php';
-    
+
 } catch (Exception $e) {
     error_log("Błąd ładowania plików: " . $e->getMessage());
     sendJsonResponse([
-        'success' => false, 
+        'success' => false,
         'message' => 'Błąd konfiguracji serwera. Skontaktuj się z administratorem.'
     ], 500);
 }
@@ -54,29 +52,30 @@ try {
 // POBIERZ I WALIDUJ DANE
 // ============================================
 
-$typ = isset($_POST['typ']) ? trim($_POST['typ']) : '';
-$imie = isset($_POST['imie']) ? trim($_POST['imie']) : '';
-$nazwisko = isset($_POST['nazwisko']) ? trim($_POST['nazwisko']) : '';
+$temat_wiadomosci = isset($_POST['temat_wiadomosci']) ? trim($_POST['temat_wiadomosci']) : '';
+$imie_nazwisko = isset($_POST['imie_nazwisko']) ? trim($_POST['imie_nazwisko']) : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $telefon = isset($_POST['telefon']) ? trim($_POST['telefon']) : '';
-$temat = isset($_POST['temat']) ? trim($_POST['temat']) : '';
-$pytanie = isset($_POST['pytanie']) ? trim($_POST['pytanie']) : '';
+$lokalizacja = isset($_POST['lokalizacja']) ? trim($_POST['lokalizacja']) : '';
+$opis = isset($_POST['opis']) ? trim($_POST['opis']) : '';
+$termin = isset($_POST['termin']) ? trim($_POST['termin']) : '';
 $zgoda_rodo = isset($_POST['zgoda_rodo']) ? 1 : 0;
 $zgoda_marketing = isset($_POST['zgoda_marketing']) ? 1 : 0;
 
 // Log dla debugowania
 error_log("=== CONTACT FORM START ===");
-error_log("Typ: $typ, Imie: $imie, Email: $email");
+error_log("Temat: $temat_wiadomosci, Imie: $imie_nazwisko, Email: $email");
 
 // Walidacja
 $errors = [];
 
-if (empty($typ) || !in_array($typ, ['konsultacja', 'pytanie'])) {
-    $errors[] = 'Wybierz typ zapytania';
+$dozwolone_tematy = ['remont', 'elewacja', 'agregat', 'instytucje', 'prowadzenie_budowy', 'deweloper', 'konsultacja', 'wspolpraca', 'inne'];
+if (empty($temat_wiadomosci) || !in_array($temat_wiadomosci, $dozwolone_tematy)) {
+    $errors[] = 'Wybierz temat wiadomości';
 }
 
-if (empty($imie)) {
-    $errors[] = 'Imię jest wymagane';
+if (empty($imie_nazwisko)) {
+    $errors[] = 'Imię i nazwisko są wymagane';
 }
 
 if (empty($email)) {
@@ -85,12 +84,8 @@ if (empty($email)) {
     $errors[] = 'Podaj prawidłowy adres email';
 }
 
-if ($typ === 'konsultacja' && empty($temat)) {
-    $errors[] = 'Temat konsultacji jest wymagany';
-}
-
-if ($typ === 'pytanie' && empty($pytanie)) {
-    $errors[] = 'Pytanie jest wymagane';
+if (empty($opis)) {
+    $errors[] = 'Opis jest wymagany';
 }
 
 if (!$zgoda_rodo) {
@@ -107,7 +102,63 @@ if (!empty($errors)) {
 }
 
 // ============================================
-// ZAPIS DO BAZY
+// OBSŁUGA ZAŁĄCZNIKÓW
+// ============================================
+
+$uploadedFiles = [];
+$uploadDir = __DIR__ . '/uploads/contact/';
+
+// Utwórz katalog jeśli nie istnieje
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0755, true);
+}
+
+if (isset($_FILES['zdjecia']) && !empty($_FILES['zdjecia']['name'][0])) {
+    $fileCount = count($_FILES['zdjecia']['name']);
+
+    for ($i = 0; $i < $fileCount; $i++) {
+        if ($_FILES['zdjecia']['error'][$i] === UPLOAD_ERR_OK) {
+            $fileName = $_FILES['zdjecia']['name'][$i];
+            $fileTmpName = $_FILES['zdjecia']['tmp_name'][$i];
+            $fileSize = $_FILES['zdjecia']['size'][$i];
+            $fileType = $_FILES['zdjecia']['type'][$i];
+
+            // Walidacja rozmiaru (max 10MB)
+            if ($fileSize > 10 * 1024 * 1024) {
+                error_log("Plik $fileName jest za duży");
+                continue;
+            }
+
+            // Walidacja typu pliku
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+            if (!in_array($fileType, $allowedTypes)) {
+                error_log("Nieprawidłowy typ pliku: $fileType");
+                continue;
+            }
+
+            // Generuj bezpieczną nazwę
+            $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
+            $safeFileName = uniqid('contact_', true) . '.' . $fileExt;
+            $targetPath = $uploadDir . $safeFileName;
+
+            if (move_uploaded_file($fileTmpName, $targetPath)) {
+                $uploadedFiles[] = [
+                    'original_name' => $fileName,
+                    'saved_name' => $safeFileName,
+                    'path' => 'uploads/contact/' . $safeFileName,
+                    'size' => $fileSize,
+                    'type' => $fileType
+                ];
+                error_log("✓ Zapisano plik: $safeFileName");
+            } else {
+                error_log("❌ Nie udało się zapisać pliku: $fileName");
+            }
+        }
+    }
+}
+
+// ============================================
+// ZAPIS DO BAZY - leads
 // ============================================
 
 try {
@@ -115,118 +166,108 @@ try {
     if (!isset($pdo) || !($pdo instanceof PDO)) {
         throw new Exception('Brak połączenia z bazą danych');
     }
-    
-    error_log("Rozpoczynam zapis do bazy. Typ: $typ");
+
+    error_log("Rozpoczynam zapis do bazy leads");
     $pdo->beginTransaction();
-    
-    if ($typ === 'konsultacja') {
-        // KONSULTACJA → consultations
-        $stmt = $pdo->prepare("
-            INSERT INTO consultations (
-                name, email, phone, topic, 
-                status, created_at
-            ) VALUES (?, ?, ?, ?, 'new', NOW())
-        ");
-        
-        $fullName = trim($imie . ' ' . $nazwisko);
-        $stmt->execute([
-            $fullName,
-            $email,
-            $telefon,
-            $temat
-        ]);
-        
-        $insertId = $pdo->lastInsertId();
-        error_log("✓ Zapisano konsultację, ID: $insertId");
-        
-        // Zapisz zgodę marketingową
-        if ($zgoda_marketing) {
-            saveMarketingConsent($pdo, $email, $fullName, 'konsultacja', [
-                'phone' => $telefon,
-                'topic' => $temat
-            ]);
-        }
-        
-        // Commit PRZED wysyłką emaili
-        $pdo->commit();
-        
-        // Email do klienta (HTML)
-        sendConsultationEmailToClient($email, $fullName, $temat);
-        
-        // Email do admina (HTML)
-        sendConsultationEmailToAdmin($fullName, $email, $telefon, $temat);
-        
-        sendJsonResponse([
-            'success' => true,
-            'message' => 'Dziękujemy! Otrzymaliśmy Twoją prośbę o konsultację. Skontaktujemy się wkrótce.',
-            'type' => 'konsultacja',
-            'id' => $insertId
-        ]);
-        
-    } else {
-        // PYTANIE → leads
-        $stmt = $pdo->prepare("
-            INSERT INTO leads (
-                name, email, phone, message, 
-                source, status, created_at
-            ) VALUES (?, ?, ?, ?, 'website', 'new', NOW())
-        ");
-        
-        $fullName = trim($imie . ' ' . $nazwisko);
-        $stmt->execute([
-            $fullName,
-            $email,
-            $telefon,
-            $pytanie
-        ]);
-        
-        $insertId = $pdo->lastInsertId();
-        error_log("✓ Zapisano pytanie (lead), ID: $insertId");
-        
-        // Zapisz zgodę marketingową
-        if ($zgoda_marketing) {
-            saveMarketingConsent($pdo, $email, $fullName, 'pytanie', [
-                'phone' => $telefon,
-                'message_preview' => substr($pytanie, 0, 100)
-            ]);
-        }
-        
-        // Commit PRZED wysyłką emaili
-        $pdo->commit();
-        
-        // Email do klienta (HTML)
-        sendQuestionEmailToClient($email, $fullName, $pytanie);
-        
-        // Email do admina (HTML)
-        sendQuestionEmailToAdmin($fullName, $email, $telefon, $pytanie);
-        
-        sendJsonResponse([
-            'success' => true,
-            'message' => 'Dziękujemy! Otrzymaliśmy Twoje pytanie. Odpowiemy w ciągu 24 godzin.',
-            'type' => 'pytanie',
-            'id' => $insertId
+
+    // Mapowanie tematów
+    $temat_map = [
+        'remont' => 'Remont / wykończenie wnętrz',
+        'elewacja' => 'Elewacja (malowanie / naprawy)',
+        'agregat' => 'Malowanie wielkopowierzchniowe agregatem',
+        'instytucje' => 'Instytucje i firmy (kosztorys / harmonogram)',
+        'prowadzenie_budowy' => 'Prowadzenie budowy / organizacja ekip',
+        'deweloper' => 'Realizacja projektu deweloperskiego',
+        'konsultacja' => 'Konsultacja online (45 min / 200 zł)',
+        'wspolpraca' => 'Współpraca medialna',
+        'inne' => 'Inne'
+    ];
+
+    $temat_pelny = $temat_map[$temat_wiadomosci] ?? $temat_wiadomosci;
+
+    // Przygotuj wiadomość
+    $message = "Temat: $temat_pelny\n\n";
+    $message .= "Opis:\n$opis\n\n";
+    if (!empty($lokalizacja)) {
+        $message .= "Lokalizacja: $lokalizacja\n";
+    }
+    if (!empty($termin)) {
+        $message .= "Termin: $termin\n";
+    }
+    if (!empty($uploadedFiles)) {
+        $message .= "\nZałączniki: " . count($uploadedFiles) . " plik(ów)\n";
+    }
+
+    // Przygotuj dodatkowe dane JSON
+    $additionalData = [
+        'temat' => $temat_wiadomosci,
+        'temat_pelny' => $temat_pelny,
+        'lokalizacja' => $lokalizacja,
+        'termin' => $termin,
+        'attachments' => $uploadedFiles
+    ];
+
+    // Zapisz do leads
+    $stmt = $pdo->prepare("
+        INSERT INTO leads (
+            name, email, phone, message,
+            source, status, additional_data, created_at
+        ) VALUES (?, ?, ?, ?, 'website', 'new', ?, NOW())
+    ");
+
+    $stmt->execute([
+        $imie_nazwisko,
+        $email,
+        $telefon,
+        $message,
+        json_encode($additionalData, JSON_UNESCAPED_UNICODE)
+    ]);
+
+    $insertId = $pdo->lastInsertId();
+    error_log("✓ Zapisano lead, ID: $insertId");
+
+    // Zapisz zgodę marketingową
+    if ($zgoda_marketing) {
+        saveMarketingConsent($pdo, $email, $imie_nazwisko, $temat_wiadomosci, [
+            'phone' => $telefon,
+            'temat' => $temat_pelny
         ]);
     }
-    
+
+    // Commit PRZED wysyłką emaili
+    $pdo->commit();
+
+    // Email do klienta
+    sendContactEmailToClient($email, $imie_nazwisko, $temat_pelny, $opis);
+
+    // Email do admina
+    sendContactEmailToAdmin($imie_nazwisko, $email, $telefon, $temat_pelny, $opis, $lokalizacja, $termin, $uploadedFiles);
+
+    sendJsonResponse([
+        'success' => true,
+        'message' => 'Dziękujemy! Otrzymaliśmy Twoją wiadomość. Odpowiemy w godzinach pracy (pn-pt 8:00-16:00). Jeśli wysłałeś formularz po 16:00, odpowiemy następnego dnia roboczego.',
+        'id' => $insertId
+    ]);
+
 } catch (PDOException $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
     error_log("❌ Błąd PDO: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
-    
+
     sendJsonResponse([
         'success' => false,
-        'message' => 'Wystąpił błąd podczas zapisywania. Spróbuj ponownie lub zadzwoń.'
+        'message' => 'Wystąpił błąd podczas zapisywania. Spróbuj ponownie lub zadzwoń w godzinach 8:00-16:00 (pn-pt).'
     ], 500);
-    
+
 } catch (Exception $e) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();
     }
     error_log("❌ Błąd ogólny: " . $e->getMessage());
     error_log("Stack trace: " . $e->getTraceAsString());
-    
+
     sendJsonResponse([
         'success' => false,
         'message' => 'Wystąpił błąd. Spróbuj ponownie lub zadzwoń.'
@@ -243,95 +284,113 @@ try {
 function saveMarketingConsent($pdo, $email, $name, $type, $additionalData = []) {
     try {
         $stmt = $pdo->prepare("
-            INSERT INTO marketing_consents 
-            (email, source, consent_marketing, additional_data, subscribed_at, ip_address, user_agent, status) 
+            INSERT INTO marketing_consents
+            (email, source, consent_marketing, additional_data, subscribed_at, ip_address, user_agent, status)
             VALUES (?, 'contact', 1, ?, NOW(), ?, ?, 'active')
-            ON DUPLICATE KEY UPDATE 
+            ON DUPLICATE KEY UPDATE
                 consent_marketing = 1,
                 additional_data = VALUES(additional_data),
                 subscribed_at = NOW()
         ");
-        
+
         $additionalData['name'] = $name;
         $additionalData['type'] = $type;
-        
+
         $jsonData = json_encode($additionalData, JSON_UNESCAPED_UNICODE);
         $ipAddress = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
         $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
-        
+
         $stmt->execute([$email, $jsonData, $ipAddress, $userAgent]);
         error_log("✓ Zapisano zgodę marketingową");
-        
+
     } catch (PDOException $e) {
         error_log("⚠ Błąd zapisu zgody: " . $e->getMessage());
     }
 }
 
 /**
- * Email HTML do klienta - Konsultacja
+ * Email HTML do klienta
  */
-function sendConsultationEmailToClient($email, $name, $topic) {
+function sendContactEmailToClient($email, $name, $subject, $description) {
     $settings = getSettings();
     $companyName = $settings['company_name'] ?? 'Maltechnik';
     $companyPhone = $settings['company_phone'] ?? '+48 784 607 452';
-    
+
     $firstName = explode(' ', $name)[0];
-    
+
     $content = '
     <h2 style="margin: 0 0 10px 0; color: #111827; font-size: 24px;">Cześć ' . htmlspecialchars($firstName) . '!</h2>
     <p style="margin: 0 0 25px 0; color: #6b7280; font-size: 16px; line-height: 1.6;">
-        Dziękujemy za zgłoszenie do konsultacji online!
+        Dziękujemy za wiadomość!
     </p>
-    
+
     <div style="background: #eff6ff; padding: 25px; border-radius: 8px; margin-bottom: 25px;">
-        <p style="margin: 0 0 8px 0; color: #1e40af; font-size: 14px; font-weight: 600;">Temat konsultacji:</p>
-        <p style="margin: 0; color: #1e3a8a; font-size: 16px; font-weight: 500;">' . htmlspecialchars($topic) . '</p>
+        <p style="margin: 0 0 8px 0; color: #1e40af; font-size: 14px; font-weight: 600;">Temat:</p>
+        <p style="margin: 0; color: #1e3a8a; font-size: 16px; font-weight: 500;">' . htmlspecialchars($subject) . '</p>
     </div>
-    
+
     <p style="margin: 0 0 20px 0; color: #374151; font-size: 15px; line-height: 1.6;">
-        Skontaktujemy się z Tobą w ciągu <strong>24 godzin</strong>, aby ustalić termin rozmowy.
+        Otrzymaliśmy Twoją wiadomość i <strong>odpowiemy w godzinach pracy (pn-pt 8:00-16:00)</strong>. Jeśli wysłałeś formularz po 16:00, odpowiemy następnego dnia roboczego.
     </p>
-    
-    <div style="background: #fef3cd; border-left: 4px solid #f59e0b; padding: 20px; margin: 25px 0; border-radius: 6px;">
-        <p style="margin: 0; font-size: 14px; color: #92400e; line-height: 1.6;">
-            <strong style="display: block; margin-bottom: 8px;">⏰ W razie pilnych spraw:</strong>
-            Możesz do nas zadzwonić:<br>
+
+    <div style="background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; margin: 25px 0; border-radius: 6px;">
+        <p style="margin: 0; font-size: 14px; color: #166534; line-height: 1.6;">
+            <strong style="display: block; margin-bottom: 8px;">📞 Kontakt telefoniczny:</strong>
+            Jeśli chcesz szybciej, zadzwoń:<br>
             <strong style="font-size: 16px; color: #2B59A6;">' . htmlspecialchars($companyPhone) . '</strong><br>
-            <span style="font-size: 13px;">Pon-Pt: 8:00-18:00, Sob: 9:00-14:00</span>
+            <span style="font-size: 13px;">pn-pt: 8:00-16:00</span>
         </p>
     </div>
-    
+
+    <div style="background: #fef3cd; border-left: 4px solid #f59e0b; padding: 20px; margin: 25px 0; border-radius: 6px;">
+        <p style="margin: 0; font-size: 14px; color: #92400e; line-height: 1.6;">
+            <strong style="display: block; margin-bottom: 8px;">⚠️ Po godzinach:</strong>
+            Po 16:00 i w weekendy nie oddzwaniamy i nie prowadzimy rozmów. Odpowiadamy pisemnie (mail/WhatsApp).
+        </p>
+    </div>
+
     <p style="margin: 30px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
         Pozdrawiamy serdecznie,<br>
         <strong style="color: #2B59A6;">Zespół ' . htmlspecialchars($companyName) . '</strong>
     </p>
     ';
-    
-    $htmlEmail = getEmailTemplate($content, 'Potwierdzenie - Konsultacja online');
-    
+
+    $htmlEmail = getEmailTemplate($content, 'Otrzymaliśmy Twoją wiadomość');
+
     return sendHTMLEmail(
         $email,
         $name,
-        "Potwierdzenie konsultacji - {$companyName}",
+        "Potwierdzenie - {$companyName}",
         $htmlEmail
     );
 }
 
 /**
- * Email HTML do admina - Konsultacja
+ * Email HTML do admina
  */
-function sendConsultationEmailToAdmin($name, $email, $phone, $topic) {
+function sendContactEmailToAdmin($name, $email, $phone, $subject, $description, $location, $deadline, $attachments) {
     $settings = getSettings();
     $companyName = $settings['company_name'] ?? 'Maltechnik';
     $notificationEmail = $settings['notification_email'] ?? 'info@maltechnik.pl';
-    
+
+    $attachmentsHtml = '';
+    if (!empty($attachments)) {
+        $attachmentsHtml = '<h3 style="margin: 25px 0 15px 0; color: #111827; font-size: 18px; font-weight: 600;">Załączniki (' . count($attachments) . '):</h3>';
+        $attachmentsHtml .= '<ul style="margin: 0; padding-left: 20px;">';
+        foreach ($attachments as $file) {
+            $fileUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/' . $file['path'];
+            $attachmentsHtml .= '<li style="margin: 5px 0;"><a href="' . htmlspecialchars($fileUrl) . '" style="color: #2B59A6;">' . htmlspecialchars($file['original_name']) . '</a> (' . round($file['size'] / 1024, 2) . ' KB)</li>';
+        }
+        $attachmentsHtml .= '</ul>';
+    }
+
     $content = '
     <div style="background: #fef3cd; border-left: 4px solid #f59e0b; padding: 20px; margin-bottom: 25px; border-radius: 6px;">
         <p style="margin: 0; font-size: 16px; color: #92400e; font-weight: 600;">
-            📞 NOWA PROŚBA O KONSULTACJĘ ONLINE
+            📧 NOWA WIADOMOŚĆ Z FORMULARZA
         </p>
     </div>
-    
+
     <h3 style="margin: 0 0 15px 0; color: #111827; font-size: 18px; font-weight: 600;">Dane klienta:</h3>
     <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 25px;">
         <tr>
@@ -343,145 +402,44 @@ function sendConsultationEmailToAdmin($name, $email, $phone, $topic) {
             <td style="padding: 10px 0; color: #374151; font-size: 14px;"><a href="mailto:' . htmlspecialchars($email) . '" style="color: #2B59A6; text-decoration: none;">' . htmlspecialchars($email) . '</a></td>
         </tr>
         <tr>
-            <td style="padding: 10px 0; color: #6b7280; font-size: 14px;"><strong style="color: #111827;">Telefon:</strong></td>
-            <td style="padding: 10px 0; color: #374151; font-size: 14px;"><strong style="color: #2B59A6;">' . htmlspecialchars($phone) . '</strong></td>
+            <td style="padding: 10px 0; color: #6b7280; font-size: 14px;"><strong style="color: #111827;">Telefon/WhatsApp:</strong></td>
+            <td style="padding: 10px 0; color: #374151; font-size: 14px;"><strong style="color: #2B59A6;">' . htmlspecialchars($phone ?: 'Nie podano') . '</strong></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 0; color: #6b7280; font-size: 14px;"><strong style="color: #111827;">Temat:</strong></td>
+            <td style="padding: 10px 0; color: #374151; font-size: 14px;">' . htmlspecialchars($subject) . '</td>
         </tr>
     </table>
-    
-    <h3 style="margin: 0 0 15px 0; color: #111827; font-size: 18px; font-weight: 600;">Temat konsultacji:</h3>
+
+    <h3 style="margin: 0 0 15px 0; color: #111827; font-size: 18px; font-weight: 600;">Opis:</h3>
     <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-        <p style="margin: 0; color: #374151; font-size: 15px; line-height: 1.6;">' . nl2br(htmlspecialchars($topic)) . '</p>
+        <p style="margin: 0; color: #374151; font-size: 15px; line-height: 1.6;">' . nl2br(htmlspecialchars($description)) . '</p>
     </div>
-    
+
+    ' . (!empty($location) ? '<p style="margin: 10px 0; color: #374151;"><strong>Lokalizacja:</strong> ' . htmlspecialchars($location) . '</p>' : '') . '
+    ' . (!empty($deadline) ? '<p style="margin: 10px 0; color: #374151;"><strong>Termin:</strong> ' . htmlspecialchars($deadline) . '</p>' : '') . '
+
+    ' . $attachmentsHtml . '
+
     <div style="background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; margin: 25px 0; border-radius: 6px;">
         <p style="margin: 0; font-size: 14px; color: #166534; line-height: 1.6;">
             <strong style="display: block; margin-bottom: 8px; font-size: 15px;">✅ AKCJA:</strong>
-            Skontaktuj się z klientem w ciągu 24h i umów termin konsultacji!
+            Odpowiedz klientowi w godzinach pracy (pn-pt 8:00-16:00). Po godzinach odpowiadamy pisemnie (mail/WhatsApp).
         </p>
     </div>
-    
+
     <p style="margin: 25px 0 0 0; font-size: 12px; color: #9ca3af;">
         Data zgłoszenia: ' . date('Y-m-d H:i:s') . '<br>
         IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . '
     </p>
     ';
-    
-    $htmlEmail = getEmailTemplate($content, '📞 Nowa konsultacja online');
-    
+
+    $htmlEmail = getEmailTemplate($content, '📧 Nowa wiadomość z formularza');
+
     return sendHTMLEmail(
         $notificationEmail,
         $companyName,
-        "📞 Nowa konsultacja online",
-        $htmlEmail,
-        $email
-    );
-}
-
-/**
- * Email HTML do klienta - Pytanie
- */
-function sendQuestionEmailToClient($email, $name, $question) {
-    $settings = getSettings();
-    $companyName = $settings['company_name'] ?? 'Maltechnik';
-    $companyPhone = $settings['company_phone'] ?? '+48 784 607 452';
-    
-    $firstName = explode(' ', $name)[0];
-    
-    $content = '
-    <h2 style="margin: 0 0 10px 0; color: #111827; font-size: 24px;">Cześć ' . htmlspecialchars($firstName) . '!</h2>
-    <p style="margin: 0 0 25px 0; color: #6b7280; font-size: 16px; line-height: 1.6;">
-        Dziękujemy za Twoje pytanie!
-    </p>
-    
-    <div style="background: #f9fafb; padding: 25px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e5e7eb;">
-        <p style="margin: 0 0 10px 0; color: #6b7280; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Twoje pytanie:</p>
-        <p style="margin: 0; color: #374151; font-size: 15px; line-height: 1.6;">' . nl2br(htmlspecialchars($question)) . '</p>
-    </div>
-    
-    <p style="margin: 0 0 20px 0; color: #374151; font-size: 15px; line-height: 1.6;">
-        Otrzymaliśmy Twoją wiadomość i <strong>odpowiemy w ciągu 24 godzin</strong>.
-    </p>
-    
-    <div style="background: #fef3cd; border-left: 4px solid #f59e0b; padding: 20px; margin: 25px 0; border-radius: 6px;">
-        <p style="margin: 0; font-size: 14px; color: #92400e; line-height: 1.6;">
-            <strong style="display: block; margin-bottom: 8px;">⏰ W razie pilnych spraw:</strong>
-            Możesz do nas zadzwonić:<br>
-            <strong style="font-size: 16px; color: #2B59A6;">' . htmlspecialchars($companyPhone) . '</strong><br>
-            <span style="font-size: 13px;">Pon-Pt: 8:00-18:00, Sob: 9:00-14:00</span>
-        </p>
-    </div>
-    
-    <p style="margin: 30px 0 0 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
-        Pozdrawiamy serdecznie,<br>
-        <strong style="color: #2B59A6;">Zespół ' . htmlspecialchars($companyName) . '</strong>
-    </p>
-    ';
-    
-    $htmlEmail = getEmailTemplate($content, 'Otrzymaliśmy Twoje pytanie');
-    
-    return sendHTMLEmail(
-        $email,
-        $name,
-        "Potwierdzenie - Otrzymaliśmy Twoje pytanie",
-        $htmlEmail
-    );
-}
-
-/**
- * Email HTML do admina - Pytanie
- */
-function sendQuestionEmailToAdmin($name, $email, $phone, $question) {
-    $settings = getSettings();
-    $companyName = $settings['company_name'] ?? 'Maltechnik';
-    $notificationEmail = $settings['notification_email'] ?? 'info@maltechnik.pl';
-    
-    $content = '
-    <div style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 20px; margin-bottom: 25px; border-radius: 6px;">
-        <p style="margin: 0; font-size: 16px; color: #1e40af; font-weight: 600;">
-            ❓ NOWE PYTANIE OD KLIENTA
-        </p>
-    </div>
-    
-    <h3 style="margin: 0 0 15px 0; color: #111827; font-size: 18px; font-weight: 600;">Dane klienta:</h3>
-    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 25px;">
-        <tr>
-            <td style="padding: 10px 0; color: #6b7280; font-size: 14px; width: 35%;"><strong style="color: #111827;">Imię i nazwisko:</strong></td>
-            <td style="padding: 10px 0; color: #374151; font-size: 14px;">' . htmlspecialchars($name) . '</td>
-        </tr>
-        <tr>
-            <td style="padding: 10px 0; color: #6b7280; font-size: 14px;"><strong style="color: #111827;">Email:</strong></td>
-            <td style="padding: 10px 0; color: #374151; font-size: 14px;"><a href="mailto:' . htmlspecialchars($email) . '" style="color: #2B59A6; text-decoration: none;">' . htmlspecialchars($email) . '</a></td>
-        </tr>
-        <tr>
-            <td style="padding: 10px 0; color: #6b7280; font-size: 14px;"><strong style="color: #111827;">Telefon:</strong></td>
-            <td style="padding: 10px 0; color: #374151; font-size: 14px;"><strong style="color: #2B59A6;">' . htmlspecialchars($phone) . '</strong></td>
-        </tr>
-    </table>
-    
-    <h3 style="margin: 0 0 15px 0; color: #111827; font-size: 18px; font-weight: 600;">Treść pytania:</h3>
-    <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-        <p style="margin: 0; color: #374151; font-size: 15px; line-height: 1.6;">' . nl2br(htmlspecialchars($question)) . '</p>
-    </div>
-    
-    <div style="background: #dcfce7; border-left: 4px solid #16a34a; padding: 20px; margin: 25px 0; border-radius: 6px;">
-        <p style="margin: 0; font-size: 14px; color: #166534; line-height: 1.6;">
-            <strong style="display: block; margin-bottom: 8px; font-size: 15px;">✅ AKCJA:</strong>
-            Odpowiedz klientowi w ciągu 24h!
-        </p>
-    </div>
-    
-    <p style="margin: 25px 0 0 0; font-size: 12px; color: #9ca3af;">
-        Data zgłoszenia: ' . date('Y-m-d H:i:s') . '<br>
-        IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . '
-    </p>
-    ';
-    
-    $htmlEmail = getEmailTemplate($content, '❓ Nowe pytanie od klienta');
-    
-    return sendHTMLEmail(
-        $notificationEmail,
-        $companyName,
-        "❓ Nowe pytanie od klienta",
+        "📧 Nowa wiadomość: $subject",
         $htmlEmail,
         $email
     );
