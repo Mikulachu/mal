@@ -32,11 +32,11 @@ $pageTitle = 'Remont bez stresu - Zrobione raz, a dobrze';
                     Nie sprzedajemy „robót budowlanych". Sprzedajemy spokój: termin, porządek i efekt, który nie wymaga poprawek. Działamy w Chojnicach i okolicy.
                 </p>
                 <div class="hero__cta">
-                    <a href="/kontakt.php" class="btn btn--primary btn--large">
-                        <i class="bi bi-envelope"></i> Wypełnij formularz i wybierz godzinę rozmowy
-                    </a>
-                    <a href="tel:<?php echo h($companyPhone); ?>" class="btn btn--secondary btn--large">
+                    <a href="tel:<?php echo h($companyPhone); ?>" class="btn btn--primary btn--large">
                         <i class="bi bi-telephone"></i> Zadzwoń: <?php echo h($companyPhone); ?>
+                    </a>
+                    <a href="/kontakt.php" class="btn btn--secondary btn--large">
+                        <i class="bi bi-envelope"></i> Napisz przez formularz (ze zdjęciami)
                     </a>
                 </div>
             </div>
@@ -359,6 +359,85 @@ $pageTitle = 'Remont bez stresu - Zrobione raz, a dobrze';
 </section>
 
 <!-- ============================================
+     PREMIUM: PROWADZENIE BUDOWY
+     ============================================ -->
+<section class="section section--premium" style="background: linear-gradient(135deg, #1e3a73 0%, #2B59A6 100%); color: #FFFFFF; padding: 4rem 0;">
+    <div class="container">
+        <div class="premium-box" style="max-width: 900px; margin: 0 auto;">
+            <div class="premium-badge" style="display: inline-block; background: #FFFFFF; color: #2B59A6; padding: 0.5rem 1.25rem; border-radius: 2rem; font-weight: 700; font-size: 0.875rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                Premium
+            </div>
+
+            <h2 style="font-size: 2.25rem; font-weight: 700; margin-bottom: 1.25rem; color: #FFFFFF;">
+                Prowadzenie budowy / organizacja ekip
+            </h2>
+
+            <div style="font-size: 1.125rem; line-height: 1.8; color: rgba(255,255,255,0.95);">
+                <p style="margin-bottom: 1rem;">
+                    <strong>Masz pieniądze na budowę, ale nie masz czasu na cyrk z ekipami?</strong>
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Budowa potrafi zjeść miesiące życia: telefony, pytania o oczywistości, brak decyzji, przerwy w robocie i poprawki.
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    U nas to wygląda inaczej: bierzemy na siebie organizację, koordynację i jakość.
+                </p>
+                <p style="margin-bottom: 2rem;">
+                    Ty zamiast studiować technologie i tłumaczyć wykonawcom „jak to ma być", zajmujesz się pracą, rodziną albo odpoczywasz.
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <a href="tel:<?php echo h($companyPhone); ?>" class="btn" style="background: #FFFFFF; color: #2B59A6; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="bi bi-telephone"></i> Zadzwoń: <?php echo h($companyPhone); ?>
+                </a>
+                <a href="/kontakt.php" class="btn" style="background: transparent; color: #FFFFFF; border: 2px solid #FFFFFF; padding: 1rem 2rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="bi bi-envelope"></i> Napisz przez formularz (ze zdjęciami)
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     PREMIUM: REALIZACJA PROJEKTU DEWELOPERSKIEGO
+     ============================================ -->
+<section class="section" style="background: #F7F8FA; padding: 4rem 0;">
+    <div class="container">
+        <div class="premium-box" style="max-width: 900px; margin: 0 auto;">
+            <div class="premium-badge" style="display: inline-block; background: #2B59A6; color: #FFFFFF; padding: 0.5rem 1.25rem; border-radius: 2rem; font-weight: 700; font-size: 0.875rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                Premium
+            </div>
+
+            <h2 style="font-size: 2.25rem; font-weight: 700; margin-bottom: 1.25rem; color: #111827;">
+                Realizacja projektu deweloperskiego
+            </h2>
+
+            <div style="font-size: 1.125rem; line-height: 1.8; color: #6B7280;">
+                <p style="margin-bottom: 1rem;">
+                    <strong>Masz działkę albo kapitał i chcesz zrobić projekt, który ma się sprzedać — a nie „ładnie wyglądać na papierze"?</strong>
+                </p>
+                <p style="margin-bottom: 1rem;">
+                    Pomagamy poukładać temat tak, żeby inwestycja miała sens: decyzje, wykonawcy, standard, terminy, ryzyka i jakość.
+                </p>
+                <p style="margin-bottom: 2rem;">
+                    Celem jest prosty wynik: zbudować, dowieźć i sprzedać bez przepalania kasy na błędach.
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                <a href="tel:<?php echo h($companyPhone); ?>" class="btn btn--primary btn--large">
+                    <i class="bi bi-telephone"></i> Zadzwoń: <?php echo h($companyPhone); ?>
+                </a>
+                <a href="/kontakt.php" class="btn btn--secondary btn--large">
+                    <i class="bi bi-envelope"></i> Napisz przez formularz
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
      CTA GŁÓWNE
      ============================================ -->
 <section class="section section--alt cta-main">
@@ -367,14 +446,14 @@ $pageTitle = 'Remont bez stresu - Zrobione raz, a dobrze';
             <div class="cta-box__content">
                 <h2 class="cta-box__title">Chcesz mieć spokój? Zrób pierwszy krok.</h2>
                 <p class="cta-box__desc">
-                    Wypełnij formularz i wybierz godzinę rozmowy. Oddzwonię przygotowany i konkretnie powiem Ci, co dalej.
+                    Zadzwoń w godzinach 8:00-16:00 (pn-pt) lub napisz przez formularz. Odpowiadamy pisemnie (mail/WhatsApp).
                 </p>
                 <div class="cta-box__buttons">
-                    <a href="/kontakt.php" class="btn btn--primary btn--large">
-                        <i class="bi bi-envelope"></i> Przejdź do formularza
-                    </a>
-                    <a href="tel:<?php echo h($companyPhone); ?>" class="btn btn--secondary btn--large">
+                    <a href="tel:<?php echo h($companyPhone); ?>" class="btn btn--primary btn--large">
                         <i class="bi bi-telephone"></i> Zadzwoń: <?php echo h($companyPhone); ?>
+                    </a>
+                    <a href="/kontakt.php" class="btn btn--secondary btn--large">
+                        <i class="bi bi-envelope"></i> Napisz przez formularz (ze zdjęciami)
                     </a>
                 </div>
             </div>

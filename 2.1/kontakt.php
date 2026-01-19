@@ -89,7 +89,7 @@ $pageTitle = 'Kontakt';
                         <div class="info-item__content">
                             <h4>Telefon</h4>
                             <a href="tel:<?php echo h($companyPhone); ?>"><?php echo h($companyPhone); ?></a>
-                            <p class="info-item__note">Pon-Pt: 8:00-18:00, Sob: 9:00-14:00</p>
+                            <p class="info-item__note">Kontakt telefoniczny: 8:00–16:00 (pn–pt). Po godzinach nie oddzwaniamy i nie prowadzimy rozmów. Jeśli coś jest ważne — napisz lub nagraj wiadomość na WhatsApp i dołącz zdjęcia. Odpiszemy w następnym dniu roboczym.</p>
                         </div>
                     </div>
                     
@@ -122,7 +122,7 @@ $pageTitle = 'Kontakt';
                         <div class="info-item__content">
                             <h4>Czas reakcji</h4>
                             <p>Odpowiedź w ciągu 24 godzin</p>
-                            <p class="info-item__note">W pilnych sprawach dzwoń</p>
+                            <p class="info-item__note">Odpowiadamy w godzinach pracy</p>
                         </div>
                     </div>
                 </div>
@@ -147,63 +147,73 @@ $pageTitle = 'Kontakt';
                 <div class="contact-form-card">
                     <h2 class="contact-form__title">Wyślij wiadomość</h2>
                     <p class="contact-form__desc">
-                        Wypełnij formularz, a odezwiemy się w ciągu 24 godzin
+                        Wolisz opisać temat na spokojnie? Napisz w formularzu i dołącz zdjęcia. Odpowiadamy w godzinach pracy. Jeśli piszesz po 16:00 — odpiszemy następnego dnia roboczego.
                     </p>
                     
-                    <form class="contact-form" id="contactForm">
-                        
-                        <!-- Typ zapytania -->
+                    <form class="contact-form" id="contactForm" enctype="multipart/form-data">
+
+                        <!-- Temat wiadomości -->
                         <div class="form-group">
-                            <label class="form-label">Czego dotyczy zapytanie?</label>
-                            <div class="form-radio-group">
-                                <label class="form-radio">
-                                    <input type="radio" name="typ" value="konsultacja" checked required>
-                                    <span><i class="bi bi-camera-video"></i> Konsultacja online</span>
-                                </label>
-                                <label class="form-radio">
-                                    <input type="radio" name="typ" value="pytanie">
-                                    <span><i class="bi bi-question-circle"></i> Mam pytanie</span>
-                                </label>
-                            </div>
+                            <label for="temat_wiadomosci" class="form-label">Temat wiadomości <span class="required">*</span></label>
+                            <select name="temat_wiadomosci" id="temat_wiadomosci" class="form-input" required>
+                                <option value="">-- Wybierz temat --</option>
+                                <option value="remont">Remont / wykończenie wnętrz</option>
+                                <option value="elewacja">Elewacja (malowanie / naprawy)</option>
+                                <option value="agregat">Malowanie wielkopowierzchniowe agregatem (hale/magazyny)</option>
+                                <option value="instytucje">Instytucje i firmy (kosztorys / harmonogram)</option>
+                                <option value="prowadzenie_budowy">Prowadzenie budowy / organizacja ekip</option>
+                                <option value="deweloper">Realizacja projektu deweloperskiego</option>
+                                <option value="konsultacja">Konsultacja online (45 min / 200 zł)</option>
+                                <option value="wspolpraca">Współpraca medialna</option>
+                                <option value="inne">Inne</option>
+                            </select>
                         </div>
-                        
-                        <!-- Imię -->
+
+                        <!-- Imię i nazwisko -->
                         <div class="form-group">
-                            <label for="imie" class="form-label">Imię <span class="required">*</span></label>
-                            <input type="text" name="imie" id="imie" class="form-input" placeholder="Twoje imię" required>
+                            <label for="imie_nazwisko" class="form-label">Imię i nazwisko <span class="required">*</span></label>
+                            <input type="text" name="imie_nazwisko" id="imie_nazwisko" class="form-input" placeholder="Jan Kowalski" required>
                         </div>
-                        
-                        <!-- Nazwisko (opcjonalne) -->
-                        <div class="form-group">
-                            <label for="nazwisko" class="form-label">Nazwisko</label>
-                            <input type="text" name="nazwisko" id="nazwisko" class="form-input" placeholder="Twoje nazwisko">
-                        </div>
-                        
+
                         <!-- Email -->
                         <div class="form-group">
                             <label for="email" class="form-label">Email <span class="required">*</span></label>
                             <input type="email" name="email" id="email" class="form-input" placeholder="twoj@email.pl" required>
                         </div>
-                        
-                        <!-- Telefon (opcjonalnie) -->
+
+                        <!-- WhatsApp / Telefon (opcjonalnie) -->
                         <div class="form-group">
-                            <label for="telefon" class="form-label">Telefon</label>
+                            <label for="telefon" class="form-label">WhatsApp / telefon</label>
                             <input type="tel" name="telefon" id="telefon" class="form-input" placeholder="+48 784 607 452">
-                            <p class="form-help"><i class="bi bi-info-circle"></i> Opcjonalnie – jeśli wolisz kontakt telefoniczny</p>
+                            <p class="form-help"><i class="bi bi-info-circle"></i> Opcjonalnie – jeśli chcesz odpowiedź też na WhatsApp</p>
                         </div>
-                        
-                        <!-- TEMAT KONSULTACJI (tylko dla konsultacji) -->
-                        <div class="form-group" id="tematGroup">
-                            <label for="temat" class="form-label">Temat konsultacji <span class="required">*</span></label>
-                            <input type="text" name="temat" id="temat" class="form-input" placeholder="Np. Wybór koloru elewacji, dobór materiałów..." required>
-                            <p class="form-help"><i class="bi bi-lightbulb"></i> O czym chcesz porozmawiać podczas konsultacji?</p>
+
+                        <!-- Lokalizacja -->
+                        <div class="form-group">
+                            <label for="lokalizacja" class="form-label">Lokalizacja</label>
+                            <input type="text" name="lokalizacja" id="lokalizacja" class="form-input" placeholder="Np. Chojnice, ul. Przykładowa 12">
+                            <p class="form-help"><i class="bi bi-geo-alt"></i> Gdzie znajduje się obiekt?</p>
                         </div>
-                        
-                        <!-- PYTANIE (tylko dla pytania) -->
-                        <div class="form-group" id="pytanieGroup" style="display: none;">
-                            <label for="pytanie" class="form-label">Twoje pytanie <span class="required">*</span></label>
-                            <textarea name="pytanie" id="pytanie" class="form-textarea" rows="6" placeholder="Zadaj swoje pytanie..."></textarea>
+
+                        <!-- Opis -->
+                        <div class="form-group">
+                            <label for="opis" class="form-label">Opis <span class="required">*</span></label>
+                            <textarea name="opis" id="opis" class="form-textarea" rows="8" placeholder="Opisz szczegółowo, czego potrzebujesz. Im więcej informacji, tym lepiej przygotujemy się do rozmowy." required></textarea>
                             <p class="form-help"><i class="bi bi-chat-left-text"></i> Opisz szczegółowo, w czym możemy Ci pomóc</p>
+                        </div>
+
+                        <!-- Termin -->
+                        <div class="form-group">
+                            <label for="termin" class="form-label">Termin / kiedy chcesz startować</label>
+                            <input type="text" name="termin" id="termin" class="form-input" placeholder="Np. za miesiąc, wiosna 2026, jak najszybciej">
+                            <p class="form-help"><i class="bi bi-calendar"></i> Kiedy planujesz rozpoczęcie prac?</p>
+                        </div>
+
+                        <!-- Zdjęcia -->
+                        <div class="form-group">
+                            <label for="zdjecia" class="form-label">Zdjęcia (załączniki)</label>
+                            <input type="file" name="zdjecia[]" id="zdjecia" class="form-input" multiple accept="image/*,.pdf">
+                            <p class="form-help"><i class="bi bi-image"></i> Możesz dodać kilka zdjęć (opcjonalnie)</p>
                         </div>
                         
                         <!-- Zgody -->
@@ -250,10 +260,15 @@ $pageTitle = 'Kontakt';
     <div class="container">
         <div class="alternative-contact__content">
             <h2>Wolisz zadzwonić?</h2>
-            <p>Rozumiemy – czasem rozmowa jest szybsza niż formularz</p>
-            <a href="tel:<?php echo h($companyPhone); ?>" class="btn btn--secondary btn--large">
-                <i class="bi bi-telephone"></i> Zadzwoń teraz: <?php echo h($companyPhone); ?>
-            </a>
+            <p>Kontakt telefoniczny: 8:00–16:00 (pn–pt). Po godzinach napisz przez formularz lub WhatsApp.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                <a href="tel:<?php echo h($companyPhone); ?>" class="btn btn--primary btn--large">
+                    <i class="bi bi-telephone"></i> Zadzwoń: <?php echo h($companyPhone); ?>
+                </a>
+                <a href="https://wa.me/48784607452" class="btn btn--secondary btn--large" target="_blank" rel="noopener">
+                    <i class="bi bi-whatsapp"></i> Napisz na WhatsApp (ze zdjęciami)
+                </a>
+            </div>
         </div>
     </div>
 </section>
